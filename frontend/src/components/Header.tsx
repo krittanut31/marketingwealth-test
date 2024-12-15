@@ -9,7 +9,7 @@ const Header = () => {
           <Link to="/">Home</Link>
         </li>
         <li className="h-full flex justify-center items-center px-2 ">
-          <Link to="/market">Market</Link>
+          <Link to="/item">Market</Link>
         </li>
         <li className="h-full flex justify-center items-center px-2 ">
           <Link to="/cart">Cart</Link>
