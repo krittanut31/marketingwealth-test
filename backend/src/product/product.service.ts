@@ -12,4 +12,8 @@ export class ProductService {
       length: product.length,
     };
   }
+
+  async fineProductById(id: number) {
+    return this.prisma.product.findUnique({ where: { id } });
+  }
 }
