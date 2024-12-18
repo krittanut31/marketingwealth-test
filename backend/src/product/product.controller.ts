@@ -8,8 +8,4 @@ export class ProductController {
   getAllProduct() {
     return this.productServervice.findAll();
   }
-  @Post()
-  addProduct(@Body() product) {
-    return this.productServervice.create(product);
-  }
 }
