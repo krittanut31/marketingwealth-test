@@ -6,8 +6,10 @@ import {
   Delete,
   Param,
   Body,
+  Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
+import { Response } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -31,8 +33,21 @@ export class UserController {
   }
 
   @Post('/signin')
-  async signin(@Body() data: { email: string; password: string }) {
-    return this.userService.signin(data);
+  async signin(
+    @Body() data: { email: string; password: string },
+    @Res() res: Response,
+  ) {
+    const token = await this.userService.signin(data);
+    console.log(token);
+
+    res.cookie('token', token, {
+      httpOnly: true, // ป้องกันการเข้าถึงผ่าน JavaScript
+      secure: true, // ใช้ secure เมื่ออยู่ใน HTTPS
+      sameSite: 'strict', // ป้องกันการส่ง Cookies ข้ามเว็บไซต์
+      maxAge: 60 * 60 * 100000, // อายุ Cookies (1 ชั่วโมง)
+    });
+
+    return res.json({ message: 'Login succes.' });
   }
 
   @Put(':id')

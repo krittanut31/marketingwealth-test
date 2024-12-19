@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { Header } from "./components";
-import { Home, Item, PageNotFound, Signin } from "./pages";
+import { Home, History, PageNotFound, Signin } from "./pages";
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
       <Header />
       <Routes>
         <Route path={"/"} element={<Home />} />
-        <Route path={"/item"} element={<Item />} />
+        <Route path={"/History"} element={<History />} />
         <Route path={"/signin"} element={<Signin />} />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>

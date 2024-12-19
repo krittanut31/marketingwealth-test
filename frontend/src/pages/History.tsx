@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import product_data from "../assets/product_data.json";
 import { ItemCardType } from "../type";
 import ItemCard from "../components/items/ItemCard";
 import axios from "axios";
@@ -12,7 +11,9 @@ const Itme = () => {
   const fetchData = async () => {
     await axios
       .get("http://localhost:8000/product")
-      .then((res) => console.log(res.data))
+      .then((res) => {
+        setData(res.data.product);
+      })
       .catch((err) => console.error(err));
   };
 

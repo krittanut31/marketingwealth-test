@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { formType } from "../type";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const Signin = () => {
   const [form, setForm] = useState<formType>({
@@ -13,10 +15,53 @@ const Signin = () => {
     setForm((prev: formType) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  console.log(form);
+  const handleSignin = async () => {
+    await axios
+      .post("http://localhost:8000/user/signin", form, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res.data);
+        toast.success("Login success.");
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("Email or Password invalid.");
+      });
+  };
 
+  const handleRegister = async () => {
+    if (
+      form.password === form.confirmPassword &&
+      form.password.length > 0 &&
+      form.confirmPassword.length > 0
+    ) {
+      await axios
+        .post("http://localhost:8000/user/register", form)
+        .then((res) => {
+          toast.success("Register success.");
+        })
+        .catch((err) => {
+          console.error(err);
+          toast.error(err.response.data.message);
+        });
+    } else {
+      toast.error(
+        "Password and confirm password do not match. Please check again."
+      );
+    }
+  };
+
+  useEffect(() => {
+    setForm({
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+  }, [layout]);
   return (
     <main className="w-full h-[calc(100dvh-40px)] flex justify-center items-center bg-[#ddd]">
+      <ToastContainer />
       <section className="w-[500px] h-[500px] bg-slate-800 rounded-2xl p-4">
         {
           {
@@ -45,8 +90,9 @@ const Signin = () => {
                   onChange={handleChange}
                 />
                 <button
-                  type="submit"
+                  type="button"
                   className="rounded-sm px-4 py-2 bg-[#1E3A8A] font-semibold mt-10"
+                  onClick={() => handleSignin()}
                 >
                   Sign in
                 </button>
@@ -96,8 +142,9 @@ const Signin = () => {
                   onChange={handleChange}
                 />
                 <button
-                  type="submit"
+                  type="button"
                   className="rounded-sm px-4 py-2 bg-[#1E3A8A] font-semibold mt-10"
+                  onClick={() => handleRegister()}
                 >
                   Register
                 </button>

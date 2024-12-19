@@ -45,9 +45,14 @@ export class UserService {
   }
 
   async signin(data: { email: string; password: string }) {
+    console.log(data);
+
     const result = await this.prisma.user.findFirst({
       where: { email: data.email },
     });
+
+    console.log(result);
+
     const checkHashedPassword = await bcrypt.compare(
       data.password,
       result.password,
@@ -56,7 +61,11 @@ export class UserService {
     console.log(checkHashedPassword);
     const payload = { email: result.email, sub: result.id };
 
-    return { token: this.jwtService.sign(payload) };
+    const token = this.jwtService.sign(payload, {
+      expiresIn: '1h', // กำหนดอายุของ Token
+    });
+
+    return token;
   }
 
   async updateUser(id: number, data: { name?: string; email?: string }) {
