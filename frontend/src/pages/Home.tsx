@@ -2,15 +2,10 @@ import { useEffect, useState } from "react";
 import { ItemCardType } from "../type";
 import ItemCard from "../components/items/ItemCard";
 import axios from "axios";
-import { getCookie } from "../util/getcookie";
+import { ToastContainer } from "react-toastify";
 
 const Home = () => {
   const [data, setData] = useState([]);
-
-  const token: string | undefined = getCookie("token");
-
-  console.log(token);
-  console.log(document.cookie);
 
   const fetchData = async () => {
     await axios
@@ -21,20 +16,19 @@ const Home = () => {
       .catch((err) => console.error(err));
   };
 
-  const addCart = async () => {};
-
   useEffect(() => {
     fetchData();
   }, []);
   return (
     <div>
       <div className="w-full flex  bg-slate-800 p-4">
-        <div className="flex flex-wrap w-full gap-2 justify-center">
+        <div className="flex flex-wrap w-full gap-2 justify-center md:w-[80%] m-auto">
           {data?.map((data: ItemCardType, index: number) => (
             <ItemCard {...data} key={data.id} />
           ))}
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

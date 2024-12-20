@@ -38,13 +38,12 @@ export class UserController {
     @Res() res: Response,
   ) {
     const token = await this.userService.signin(data);
-    console.log(token);
 
     res.cookie('token', token, {
-      httpOnly: true, // ป้องกันการเข้าถึงผ่าน JavaScript
-      secure: true, // ใช้ secure เมื่ออยู่ใน HTTPS
-      sameSite: 'strict', // ป้องกันการส่ง Cookies ข้ามเว็บไซต์
-      maxAge: 60 * 60 * 100000, // อายุ Cookies (1 ชั่วโมง)
+      httpOnly: false,
+      secure: true,
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 100000,
     });
 
     return res.json({ message: 'Login succes.' });

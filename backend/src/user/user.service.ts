@@ -45,20 +45,10 @@ export class UserService {
   }
 
   async signin(data: { email: string; password: string }) {
-    console.log(data);
-
     const result = await this.prisma.user.findFirst({
       where: { email: data.email },
     });
 
-    console.log(result);
-
-    const checkHashedPassword = await bcrypt.compare(
-      data.password,
-      result.password,
-    );
-
-    console.log(checkHashedPassword);
     const payload = { email: result.email, sub: result.id };
 
     const token = this.jwtService.sign(payload, {
